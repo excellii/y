@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DREON AUCTION - نظام وساطة وعمولات حقيقية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* التصميم الأساسي */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* تأثيرات مائية */
+        .water-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 150, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 100, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(0, 80, 255, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            animation: waterMove 15s ease-in-out infinite alternate;
+        }
+        
+        @keyframes waterMove {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* الترويسة */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-top: 2rem;
+        }
+        
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #00a8ff, #0097e6, #00a8ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 15px rgba(0, 168, 255, 0.3);
+            letter-spacing: -1px;
+        }
+        
+        .tagline {
+            font-size: 1.3rem;
+            color: #b0b0b0;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        
+        /* أزرار التنقل المائية */
+        .nav-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .nav-btn {
+            background: rgba(10, 25, 47, 0.5);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 168, 255, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 168, 255, 0.2);
+            border-color: rgba(0, 168, 255, 0.5);
+        }
+        
+        .nav-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .btn-icon {
+            font-size: 2.5rem;
+            color: #00a8ff;
+            margin-bottom: 1rem;
+        }
+        
+        .btn-title {
+            font-size: 1.4rem;
+            color: #00a8ff;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .btn-desc {
+            color: #b0b0b0;
+            font-size: 0.95rem;
+        }
+        
+        /* التصميم العام للبطاقات */
+        .card {
+            background: rgba(10, 25, 47, 0.7);
+            border-radius: 15px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 168, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #00a8ff;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+        
+        .card-title i {
+            font-size: 1.5rem;
+        }
+        
+        /* تصميم القوائم */
+        .feature-list, .task-list, .condition-list {
+            list-style-type: none;
+        }
+        
+        .feature-list li, .task-list li, .condition-list li {
+            padding: 0.7rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 1.05rem;
+        }
+        
+        .feature-list li:last-child, .task-list li:last-child, .condition-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .list-icon {
+            color: #00a8ff;
+            font-size: 1.2rem;
+            margin-top: 0.2rem;
+            flex-shrink: 0;
+        }
+        
+        /* قسم التقديم */
+        .apply-section {
+            background: linear-gradient(135deg, rgba(0, 168, 255, 0.1) 0%, rgba(10, 25, 47, 0.8) 100%);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            text-align: center;
+            padding: 2.5rem;
+        }
+        
+        .apply-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(90deg, #00a8ff, #0097e6);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            margin-top: 1.8rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+            font-size: 1.1rem;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .apply-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 168, 255, 0.5);
+        }
+        
+        /* التذييل */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1.8rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #888;
+            font-size: 1.1rem;
+        }
+        
+        .hashtag {
+            color: #00a8ff;
+            font-weight: bold;
+        }
+        
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .logo {
+                font-size: 2.2rem;
+            }
+            
+            .card {
+                padding: 1.2rem;
+            }
+            
+            .card-title {
+                font-size: 1.4rem;
+            }
+            
+            .nav-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* تأثيرات إضافية */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 168, 255, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 168, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 168, 255, 0);
+            }
+        }
+        
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00a8ff, transparent);
+            margin: 1.5rem 0;
+        }
+        
+        /* الصفحات المنفصلة */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .active-page {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .back-btn {
+            background: rgba(0, 168, 255, 0.1);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            color: #00a8ff;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-btn:hover {
+            background: rgba(0, 168, 255, 0.2);
+            transform: translateX(-5px);
+        }
+        
+        /* صفحة الميزات التفصيلية */
+        .feature-detail {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 168, 255, 0.05);
+            border-radius: 10px;
+            border-left: 3px solid #00a8ff;
+        }
+        
+        .feature-detail-title {
+            color: #00a8ff;
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* صفحة المهام التفصيلية */
+        .task-detail {
+            margin-bottom: 1.5rem;
+            padding: 1.2rem;
+            background: rgba(10, 25, 47, 0.5);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 168, 255, 0.2);
+        }
+        
+        .task-detail-title {
+            color: #00a8ff;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        /* صفحة الشروط التفصيلية */
+        .condition-detail {
+            margin-bottom: 1.5rem;
+            padding: 1.2rem;
+            background: rgba(10, 25, 47, 0.5);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 168, 255, 0.2);
+        }
+        
+        .condition-detail-title {
+            color: #00a8ff;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        /* صفحة التقديم */
+        .bot-instruction {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(0, 168, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 168, 255, 0.3);
+        }
+        
+        .bot-username {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 1rem 0;
+            font-family: monospace;
+            color: #00a8ff;
+            font-weight: bold;
+        }
+        
+        .instruction-steps {
+            text-align: right;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .instruction-step {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(10, 25, 47, 0.5);
+            border-radius: 10px;
+        }
+        
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #00a8ff;
+            color: white;
+            border-radius: 50%;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="water-effect"></div>
+    
+    <div class="container">
+        <!-- الصفحة الرئيسية -->
+        <div id="home-page" class="page active-page">
+            <header>
+                <h1 class="logo">DREON AUCTION</h1>
+                <p class="tagline">نظام وساطة وعمولات حقيقية</p>
+                <div class="intro-card card">
+                    <h2 class="card-title"><i class="fas fa-crown"></i> انضم إلى فريق النخبة</h2>
+                    <p>هل تمتلك خبرة في بيع الحسابات أو إدارة الصفقات؟ هل تبحث عن فرصة ربح حقيقية ودائمة عبر تيليجرام؟</p>
+                    <p>بوت 『DREON AUCTION』 يفتح أبوابه أمام وسطاء معتمدين للعمل ضمن نظام المزادات لبيع معرفات وحسابات السوشل ميديا!</p>
+                </div>
+            </header>
+            
+            <!-- أزرار التنقل المائية -->
+            <div class="nav-buttons">
+                <div class="nav-btn" onclick="showPage('features-page')">
+                    <div class="btn-icon"><i class="fas fa-star"></i></div>
+                    <div class="btn-title">المميزات</div>
+                    <div class="btn-desc">اكتشف جميع مزايا العمل كوسيط في نظامنا</div>
+                </div>
+                
+                <div class="nav-btn" onclick="showPage('tasks-page')">
+                    <div class="btn-icon"><i class="fas fa-tasks"></i></div>
+                    <div class="btn-title">المهام</div>
+                    <div class="btn-desc">تعرف على المهام المطلوبة من الوسيط</div>
+                </div>
+                
+                <div class="nav-btn" onclick="showPage('conditions-page')">
+                    <div class="btn-icon"><i class="fas fa-clipboard-check"></i></div>
+                    <div class="btn-title">الشروط</div>
+                    <div class="btn-desc">اطلع على شروط القبول في فريقنا</div>
+                </div>
+                
+                <div class="nav-btn" onclick="showPage('apply-page')">
+                    <div class="btn-icon"><i class="fas fa-paper-plane"></i></div>
+                    <div class="btn-title">التقديم</div>
+                    <div class="btn-desc">قدم الآن للانضمام إلى فريق النخبة</div>
+                </div>
+            </div>
+            
+            <section class="features-section">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-star"></i> مميزات العمل كوسيط</h2>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-percentage list-icon"></i> تربح 20٪ من كل عملية شحن يقوم بها المستخدم الذي جلبته.</li>
+                        <li><i class="fas fa-hand-holding-usd list-icon"></i> تحصل على عمولة ضمان من كل مزاد تُشرف عليه (كل 15,000 دينار = 1,000 دينار).</li>
+                        <li><i class="fas fa-calendar-alt list-icon"></i> حرية اختيار موعد استلام أرباحك: كل 14 يوم أو شهرياً.</li>
+                        <li><i class="fas fa-mobile-alt list-icon"></i> عمل حرّ بالكامل من هاتفك، بدون التزامات زمنية محددة.</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <footer>
+                <p class="hashtag">#DREON_TEAM | نظام وساطة وعمولات حقيقية</p>
+            </footer>
+        </div>
+        
+        <!-- صفحة المميزات التفصيلية -->
+        <div id="features-page" class="page">
+            <button class="back-btn" onclick="showPage('home-page')"><i class="fas fa-arrow-right"></i> العودة</button>
+            
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-star"></i> مميزات العمل كوسيط</h2>
+                
+                <div class="feature-detail">
+                    <h3 class="feature-detail-title"><i class="fas fa-percentage"></i> عمولة الشحن</h3>
+                    <p>تربح 20٪ من كل عملية شحن يقوم بها المستخدم الذي جلبته إلى البوت. هذه العمولة مستمرة طوال فترة استخدام المستخدم للبوت.</p>
+                </div>
+                
+                <div class="feature-detail">
+                    <h3 class="feature-detail-title"><i class="fas fa-hand-holding-usd"></i> عمولة الضمان</h3>
+                    <p>تحصل على عمولة ضمان من كل مزاد تُشرف عليه. لكل 15,000 دينار قيمة المزاد، تربح 1,000 دينار كعمولة ضمان.</p>
+                </div>
+                
+                <div class="feature-detail">
+                    <h3 class="feature-detail-title"><i class="fas fa-calendar-alt"></i> مرونة استلام الأرباح</h3>
+                    <p>لديك حرية اختيار موعد استلام أرباحك: يمكنك اختيار استلامها كل 14 يوم أو بشكل شهري، حسب ما يناسب ظروفك.</p>
+                </div>
+                
+                <div class="feature-detail">
+                    <h3 class="feature-detail-title"><i class="fas fa-mobile-alt"></i> عمل حر</h3>
+                    <p>يمكنك العمل بالكامل من هاتفك، بدون أي التزامات زمنية محددة. أنت من يتحكم بوقت العمل ومقداره.</p>
+                </div>
+                
+                <div class="feature-detail">
+                    <h3 class="feature-detail-title"><i class="fas fa-chart-line"></i> دخل متزايد</h3>
+                    <p>كلما زاد عدد المستخدمين الذين تجلبهم، زادت أرباحك. نظام العمولات مصمم لتحفيز النمو المستمر.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- صفحة المهام التفصيلية -->
+        <div id="tasks-page" class="page">
+            <button class="back-btn" onclick="showPage('home-page')"><i class="fas fa-arrow-right"></i> العودة</button>
+            
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-tasks"></i> مهام الوسيط</h2>
+                
+                <div class="task-detail">
+                    <h3 class="task-detail-title"><i class="fas fa-user-plus"></i> جذب المستخدمين</h3>
+                    <p>المهمة الأساسية للوسيط هي جذب مستخدمين جدد للبوت. يمكن القيام بذلك عبر وسائل التواصل الاجتماعي، المنتديات، أو أي قنوات أخرى مناسبة.</p>
+                </div>
+                
+                <div class="task-detail">
+                    <h3 class="task-detail-title"><i class="fas fa-gavel"></i> الإشراف على المزادات</h3>
+                    <p>يجب على الوسيط الإشراف على عمليات البيع والشراء وضمان الحقوق للطرفين. هذا يشمل التأكد من تنفيذ الصفقات بشكل عادل.</p>
+                </div>
+                
+                <div class="task-detail">
+                    <h3 class="task-detail-title"><i class="fas fa-user-check"></i> التحقق من الحسابات</h3>
+                    <p>يجب على الوسيط التأكد من مصداقية الحسابات المُباعة والتعامل باحترافية مع جميع الأطراف.</p>
+                </div>
+                
+                <div class="task-detail">
+                    <h3 class="task-detail-title"><i class="fas fa-headset"></i> الدعم الفني</h3>
+                    <p>تقديم الدعم للمستخدمين الجدد ومساعدتهم في فهم نظام العمل وكيفية استخدام البوت بشكل صحيح.</p>
+                </div>
+                
+                <div class="task-detail">
+                    <h3 class="task-detail-title"><i class="fas fa-shield-alt"></i> الحفاظ على الأمان</h3>
+                    <p>المراقبة المستمرة للأنشطة المشبوهة والإبلاغ عنها للحفاظ على بيئة آمنة للجميع.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- صفحة الشروط التفصيلية -->
+        <div id="conditions-page" class="page">
+            <button class="back-btn" onclick="showPage('home-page')"><i class="fas fa-arrow-right"></i> العودة</button>
+            
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-clipboard-check"></i> شروط القبول</h2>
+                
+                <div class="condition-detail">
+                    <h3 class="condition-detail-title"><i class="fas fa-id-card"></i> حساب حقيقي</h3>
+                    <p>يجب أن يكون حساب التليجرام حقيقي وفعّال، وليس حسابًا وهميًا أو جديدًا. يفضل أن يكون للحساب تاريخ ونشاط.</p>
+                </div>
+                
+                <div class="condition-detail">
+                    <h3 class="condition-detail-title"><i class="fas fa-handshake"></i> الصدق والشفافية</h3>
+                    <p>الالتزام بالصدق وحفظ الحقوق في جميع التعاملات. الشفافية مع الإدارة والمستخدمين أساسية.</p>
+                </div>
+                
+                <div class="condition-detail">
+                    <h3 class="condition-detail-title"><i class="fas fa-file-invoice-dollar"></i> الرسوم الإدارية</h3>
+                    <p>القبول بخصم بسيط دوري من الأرباح كرسوم إدارية لتغطية تكاليف تشغيل النظام والتطوير.</p>
+                </div>
+                
+                <div class="condition-detail">
+                    <h3 class="condition-detail-title"><i class="fas fa-clock"></i> النشاط المستمر</h3>
+                    <p>الحفاظ على نشاط مستمر في النظام والمشاركة الفعالة في المزادات والإشراف عليها.</p>
+                </div>
+                
+                <div class="condition-detail">
+                    <h3 class="condition-detail-title"><i class="fas fa-users"></i> العمل الجماعي</h3>
+                    <p>القدرة على العمل ضمن فريق والالتزام بتعليمات الإدارة وقوانين النظام.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- صفحة التقديم -->
+        <div id="apply-page" class="page">
+            <button class="back-btn" onclick="showPage('home-page')"><i class="fas fa-arrow-right"></i> العودة</button>
+            
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-paper-plane"></i> التقديم للانضمام</h2>
+                
+                <div class="bot-instruction">
+                    <h3><i class="fab fa-telegram"></i> التقديم عبر بوت التليجرام</h3>
+                    <p>للتقديم للانضمام إلى فريق وساطة DREON AUCTION، يرجى استخدام البوت الرسمي:</p>
+                    <div class="bot-username">@z3Ymbot</div>
+                    <p>اتبع الخطوات التالية:</p>
+                    
+                    <div class="instruction-steps">
+                        <div class="instruction-step">
+                            <span class="step-number">1</span>
+                            <strong>اذهب إلى بوت التقديم</strong>
+                            <p>افتح تطبيق تليجرام وابحث عن <strong>@z3Ymbot</strong> أو انقر على الرابط مباشرة.</p>
+                        </div>
+                        
+                        <div class="instruction-step">
+                            <span class="step-number">2</span>
+                            <strong>ابدأ المحادثة</strong>
+                            <p>اضغط على زر "Start" لبدء المحادثة مع البوت.</p>
+                        </div>
+                        
+                        <div class="instruction-step">
+                            <span class="step-number">3</span>
+                            <strong>املأ بياناتك</strong>
+                            <p>اتبع التعليمات وأدخل المعلومات المطلوبة:
+                                <br>- الاسم الكامل
+                                <br>- يوزر التليجرام
+                                <br>- وسيلة تواصل إضافية
+                                <br>- خبرتك في المجال
+                                <br>- فترة استلام الأرباح المفضلة</p>
+                        </div>
+                        
+                        <div class="instruction-step">
+                            <span class="step-number">4</span>
+                            <strong>أرسل الطلب</strong>
+                            <p>بعد إكمال جميع الحقول، اضغط على زر إرسال ليتم تسجيل طلبك.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <a href="https://t.me/z3Ymbot" class="apply-btn pulse">
+                        <i class="fab fa-telegram"></i> التقديم عبر البوت الآن
+                    </a>
+                </div>
+                
+                <div class="apply-section">
+                    <h3 class="card-title"><i class="fas fa-info-circle"></i> معلومات إضافية</h3>
+                    <p>بعد تقديم طلبك، سيقوم فريقنا بمراجعته والرد عليك خلال 24-48 ساعة.</p>
+                    <p>في حال قبولك، ستتلقى رسالة ترحيب مع كافة التفاصيل والخطوات التالية.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // وظيفة التنقل بين الصفحات
+        function showPage(pageId) {
+            // إخفاء جميع الصفحات
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active-page');
+            });
+            
+            // إظهار الصفحة المطلوبة
+            document.getElementById(pageId).classList.add('active-page');
+            
+            // التمرير إلى الأعلى
+            window.scrollTo(0, 0);
+        }
+        
+        // إضافة تأثيرات عند التمرير
+        window.addEventListener('scroll', function() {
+            const cards = document.querySelectorAll('.card');
+            const navButtons = document.querySelectorAll('.nav-btn');
+            
+            cards.forEach(card => {
+                const cardTop = card.getBoundingClientRect().top;
+                if (cardTop < window.innerHeight - 100) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+            
+            navButtons.forEach(button => {
+                const buttonTop = button.getBoundingClientRect().top;
+                if (buttonTop < window.innerHeight - 100) {
+                    button.style.opacity = '1';
+                    button.style.transform = 'translateY(0)';
+                }
+            });
+        });
+        
+        // تهيئة العناصر للتحريك
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            const navButtons = document.querySelectorAll('.nav-btn');
+            
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            });
+            
+            navButtons.forEach(button => {
+                button.style.opacity = '0';
+                button.style.transform = 'translateY(20px)';
+                button.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            });
+            
+            // تشغيل تأثيرات الظهور بعد تحميل الصفحة
+            setTimeout(() => {
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, index * 100);
+                });
+                
+                navButtons.forEach((button, index) => {
+                    setTimeout(() => {
+                        button.style.opacity = '1';
+                        button.style.transform = 'translateY(0)';
+                    }, index * 100 + 300);
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>
